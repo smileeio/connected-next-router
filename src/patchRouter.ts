@@ -8,10 +8,10 @@ type RouterToPatch = SingletonRouter & { router: Router }
 
 const patchRouter = (Router: RouterToPatch, store: Store): (() => void) => {
   const unpatchedMethods = {
-    set: Router.router.set,
+    set: (Router.router as any).set,
   }
 
-  Router.router.set = function (...args) {
+  ;(Router.router as any).set = function (...args: any[]) {
     if (!unpatchedMethods.set) {
       return Promise.resolve()
     }
@@ -24,7 +24,8 @@ const patchRouter = (Router: RouterToPatch, store: Store): (() => void) => {
   }
 
   return () => {
-    Router.router.set = unpatchedMethods.set
+    // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    ;(Router.router as any).set = unpatchedMethods.set
   }
 }
 

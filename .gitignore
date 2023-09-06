@@ -11,3 +11,4 @@ instrumented
 coverage
 cypress/videos
 test-lib
+.history
